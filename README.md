@@ -164,7 +164,7 @@ For example, opcode **01**, 16-bit `ADD`, can support both an operand-size and a
  - `01.MOO`
  - `6601.MOO`
  - `6701.MOO`
- - `666701.MOO`
+ - `676601.MOO`
 
 ## Randomization
 
