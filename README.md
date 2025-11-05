@@ -533,7 +533,7 @@ Creating protected mode tests is non-trivial, as memory cannot simply be randomi
 ### Further Resources
  
  - [ref.x86asm.net](http://ref.x86asm.net/) - an excellent x86 ISA reference by MazeGen and contributors
- - [sandpile.org](https://www.sandpile.org/x86/) - another excellent x86 ISA reference
+ - [sandpile.org](https://www.sandpile.org/) - another excellent x86 ISA reference
  - [test386](https://github.com/barotto/test386.asm) - an excellent test ROM for the 386 by Marco Bortolin
  - [The 386DX Microprocessor Programmer's Reference Manual](http://www.bitsavers.org/components/intel/80386/230985-003_386DX_Microprocessor_Programmers_Reference_Manual_1990.pdf) - (Bitsavers.org)
  - [The LOADALL instruction](https://www.rcollins.org/articles/loadall/) - (rcollins.org)
