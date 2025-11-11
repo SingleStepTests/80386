@@ -226,6 +226,17 @@ The status of the CPU's `LOCK` pin is captured within the included cycle traces.
 
 Bytes fetched beyond the terminating `HALT` opcode will be random. These random bytes are included in the initial `ram` state. It is not critical if your emulator does not fetch all of them.
 
+## Undefined Behavior
+
+Although the introduction of the `UD` exception eliminated a vast amount of undefined CPU behavior on Intel CPUs from the 286 onward, the 386 introduces a unique source of undefined behavior with the SIB byte.
+
+![sib_table_01](img/sib_table_01.png)
+
+Note that three entire rows of the SIB table - presented in Intel 386 manuals without comment - are actually invalid. These rows are shown here shaded in gray.
+
+In these cases the scale factor is applied to the base register in the absence of an index register. The tests currently include instruction forms with these invalid SIB encodings.
+It is up to you as to whether you want to emulate this undefined behavior - if you do not, you will need to filter tests that have invalid SIB forms.
+
 ## Test Formats
 
 The 386 test suite is published in a binary format, `MOO`. This format is a simple and extensible chunked format. 
@@ -341,7 +352,7 @@ Example `JSON` test:
     - Registers and memory locations that are unchanged from the initial state are not included in the final state.
     - The entire value of `flags` is provided if any flag has changed.
 - `exception`: An optional key that contains exception data if an exception occurred. See 'Exception Format' below.
-- `cycles`: A list of cycle states captured from the CPU. See 'Cycle Format' below.
+- `cycles`: A list of cycle states captured from the CPU. See [Cycle Format](#cycle-format) below.
 - `hash`: A SHA1 hash of the original `MOO` test chunk data. It should uniquely identify any test in the suite.
 
 ### Effective Address Format
@@ -355,6 +366,8 @@ The `ea` key in the initial state is a convenience feature that lists the variou
  - `offset`: The value of the calculated offset. If 'offset' > 'limit', an exception should occur.
  - `l_addr`: The logical address calculated from the 'base' + 'offset'. 
  - `p_addr`: The physical address. In real mode, or with paging disabled, this is the same as 'l_addr'.
+
+Note that in the event of an invalid SIB encoding, as described in the [Undefined Behavior](#undefined-behavior) section, the calculated values will not match the CPU's actual behavior.
 
 ### Exception Format
 
@@ -428,7 +441,9 @@ Read together they determine the size and active halves of the bus:
 |Active  |	 0 |  	16-bit | even address |
 |Active  |	 1 |     8-bit |  odd address |
 |Inactive|	 0 |	   8-bit | even address |
-|Inactive|	 1 |   	 8-bit |      invalid |
+|Inactive|	 1 |   	 8-bit |     invalid* |
+
+*This form is actually used to signify a DRAM refresh cycle if the integrated DRAM Refresh Unit is active. This is not seen in any of the tests.
 
 ## Undefined Instructions
 
