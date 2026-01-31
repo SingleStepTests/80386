@@ -237,6 +237,8 @@ Note that three entire rows of the SIB table - presented in Intel 386 manuals wi
 In these cases the scale factor is applied to the base register in the absence of an index register. The tests currently include instruction forms with these invalid SIB encodings.
 It is up to you as to whether you want to emulate this undefined behavior - if you do not, you will need to filter tests that have invalid SIB forms.
 
+Unfortunately, I didn't know about this prior to generating the tests - and thus when an invalid SIB byte is present the calculated EA provided in the test as a convenience feature is not very convenient, since it will be wrong. Bear that in mind until it can be corrected.
+
 ## Test Formats
 
 The 386 test suite is published in a binary format, `MOO`. This format is a simple and extensible chunked format. 
